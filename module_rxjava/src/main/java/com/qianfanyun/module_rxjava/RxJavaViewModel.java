@@ -2,29 +2,21 @@ package com.qianfanyun.module_rxjava;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.qianfanyun.module_base.api.ApiException;
+import com.qianfanyun.module_base.api.BaseApiBean;
+import com.qianfanyun.module_base.api.RxApiHelper;
+import com.qianfanyun.module_base.api.ServiceCreater;
 import com.qianfanyun.module_base.base.BaseViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import com.qianfanyun.module_rxjava.bean.TranslationBean;
 
 import androidx.annotation.NonNull;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author ArcherYc
@@ -39,55 +31,41 @@ public class RxJavaViewModel extends BaseViewModel {
     }
 
     public void simpleCase() {
-        List<Student> studentList = new ArrayList<>();
-        studentList.add(new Student(1, "aa"));
-        studentList.add(new Student(2, "bb"));
-        Disposable disposable = Observable.fromIterable(studentList)
-                .doOnNext(new Consumer<Student>() {
+        requestTranslate();
+    }
+
+    public void requestTranslate() {
+        ServiceCreater.createService(TranslateService.class)
+                .getTranslationCall()
+                .compose(RxApiHelper.rxSchedulerHelper())
+                .compose(RxApiHelper.handleResult())
+                .subscribe(new Observer<TranslationBean>() {
                     @Override
-                    public void accept(Student student) throws Exception {
-                        student.setName("cc");
+                    public void onSubscribe(Disposable d) {
+
                     }
-                })
-                .subscribe(new Consumer<Student>() {
+
                     @Override
-                    public void accept(Student student) throws Exception {
-                        Log.d("xx",student.toString());
+                    public void onNext(TranslationBean translationBean) {
+                        Log.d("xx", translationBean.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof ApiException){
+                            ApiException apiException = (ApiException) e;
+                            int status = apiException.getStatus();
+                            Log.d("xx","status--->"+status);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
+
     }
 
-    private class Student {
-        private int id;
-        private String name;
 
-        public Student(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "Student{" +
-                    "id=" + id + '\n' +
-                    "name=" + name + '\n' +
-                    '}';
-        }
-    }
 }
