@@ -17,4 +17,8 @@ public class BViewModel extends BaseViewModel {
     public BViewModel(@NonNull Application application) {
         super(application);
     }
+
+    public void jumpNew() {
+        startActivity(NewBActivity.class);
+    }
 }

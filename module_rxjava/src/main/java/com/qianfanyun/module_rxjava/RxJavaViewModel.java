@@ -13,8 +13,12 @@ import com.qianfanyun.module_rxjava.bean.TranslationBean;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -39,6 +43,12 @@ public class RxJavaViewModel extends BaseViewModel {
                 .getTranslationCall()
                 .compose(RxApiHelper.rxSchedulerHelper())
                 .compose(RxApiHelper.handleResult())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+
+                    }
+                })
                 .subscribe(new Observer<TranslationBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
