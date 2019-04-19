@@ -1,1 +1,1 @@
-include ':app', ':module_rxjava', ':module_base', ':module_b', ':module_login', ':module_recyclerview'
+include ':app', ':module_rxjava', ':module_base', ':module_b', ':module_login', ':module_recyclerview', ':module_database'
