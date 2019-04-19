@@ -8,8 +8,11 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -17,14 +20,13 @@ import androidx.lifecycle.ViewModel;
  * @date on 2019/3/26  3:13 PM
  * @mail 247067345@qq.com
  */
-public class BaseViewModel extends AndroidViewModel {
+public class BaseViewModel extends AndroidViewModel implements LifecycleEventObserver {
 
     private UIChangeLiveData uc;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
     }
-
 
 
     public void showDialog(String title) {
@@ -75,6 +77,10 @@ public class BaseViewModel extends AndroidViewModel {
         uc.onBackPressedEvent.call();
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroy() {
+
+    }
 
 
     public UIChangeLiveData getUC() {
@@ -82,6 +88,11 @@ public class BaseViewModel extends AndroidViewModel {
             uc = new UIChangeLiveData();
         }
         return uc;
+    }
+
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+
     }
 
     public final class UIChangeLiveData extends SingleLiveEvent {

@@ -51,6 +51,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
             modelClass = BaseViewModel.class;
         }
         viewModel = (VM) ViewModelProviders.of(this).get(modelClass);
+        getLifecycle().addObserver(viewModel);
         return viewModel;
     }
 

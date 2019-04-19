@@ -3,6 +3,7 @@ package debug;
 import android.app.Application;
 
 import com.billy.cc.core.component.CC;
+import com.qianfanyun.module_base.base.BaseApplication;
 import com.qianfanyun.module_login.BuildConfig;
 
 /**
@@ -10,7 +11,7 @@ import com.qianfanyun.module_login.BuildConfig;
  * @date on 2019/4/1  9:21 AM
  * @mail 247067345@qq.com
  */
-public class DebugApplication extends Application {
+public class DebugApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
