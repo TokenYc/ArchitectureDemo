@@ -1,12 +1,14 @@
 package com.qianfanyun.module_database;
 
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.qianfanyun.module_base.base.BaseViewModel;
+import com.qianfanyun.module_database.contentProvider.UriHelper;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -70,6 +72,26 @@ public class DbViewModel extends BaseViewModel {
         }
 
         cursor.close();
+    }
+
+    public void insertContentProvider() {
+        ContentResolver resolver = getApplication().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", "2");
+        contentValues.put("name", "lys");
+        contentValues.put("address", "xinbei");
+        resolver.insert(UriHelper.PersonEntry.personUri, contentValues);
+    }
+
+    public void queryContentResolver() {
+        ContentResolver contentResolver = getApplication().getContentResolver();
+        Cursor cursor = contentResolver.query(UriHelper.PersonEntry.personUri, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String address = cursor.getString(cursor.getColumnIndex("address"));
+            String str = "name-->" + name + "\n" + "address-->" + address;
+            console.setValue(str);
+        }
     }
 
     @Override

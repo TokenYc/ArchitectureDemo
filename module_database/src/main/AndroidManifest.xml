@@ -4,6 +4,9 @@
 
     <application>
         <activity android:name=".MainActivity"></activity>
+        <provider
+            android:name=".contentProvider.PersonProvider"
+            android:authorities="com.qianfanyun.module_database" />
     </application>
 
 </manifest>

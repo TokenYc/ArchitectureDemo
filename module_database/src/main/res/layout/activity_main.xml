@@ -54,11 +54,26 @@
             android:onClick="@{()->viewModel.query()}"
             />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="provider插入"
+            android:onClick="@{()->viewModel.insertContentProvider()}"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="contentResolver查询"
+            android:onClick="@{()->viewModel.queryContentResolver()}"
+            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="@{viewModel.console}"
             />
+
     </LinearLayout>
 </layout>
