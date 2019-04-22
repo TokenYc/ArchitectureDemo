@@ -1,5 +1,6 @@
 package com.qianfanyun.module_rxjava;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
 
@@ -10,6 +11,10 @@ import com.qianfanyun.module_base.api.RxApiHelper;
 import com.qianfanyun.module_base.api.ServiceCreater;
 import com.qianfanyun.module_base.base.BaseViewModel;
 import com.qianfanyun.module_rxjava.bean.TranslationBean;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
+
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
@@ -38,44 +43,92 @@ public class RxJavaViewModel extends BaseViewModel {
         requestTranslate();
     }
 
+    @SuppressLint("CheckResult")
     public void requestTranslate() {
-        ServiceCreater.createService(TranslateService.class)
-                .getTranslationCall()
-                .compose(RxApiHelper.rxSchedulerHelper())
-                .compose(RxApiHelper.handleResult())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
+//        ServiceCreater.createService(TranslateService.class)
+//                .getTranslationCall()
+//                .compose(RxApiHelper.rxSchedulerHelper())
+//                .compose(RxApiHelper.handleResult())
+//                .doOnSubscribe(new Consumer<Disposable>() {
+//                    @Override
+//                    public void accept(Disposable disposable) throws Exception {
+//
+//                    }
+//                })
+//                .subscribe(new Observer<TranslationBean>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(TranslationBean translationBean) {
+//                        Log.d("xx", translationBean.toString());
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        if (e instanceof ApiException){
+//                            ApiException apiException = (ApiException) e;
+//                            int status = apiException.getStatus()
+//                            Log.d("xx","status--->"+status);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
 
+        Observable.interval(1, TimeUnit.SECONDS)
+                .compose(getLifecycleProvider().bindToLifecycle())
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d("xx", "onDisPose");
                     }
                 })
-                .subscribe(new Observer<TranslationBean>() {
+                .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(TranslationBean translationBean) {
-                        Log.d("xx", translationBean.toString());
+                    public void onNext(Long aLong) {
+                        Log.d("xx","轮询一次");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof ApiException){
-                            ApiException apiException = (ApiException) e;
-                            int status = apiException.getStatus();
-                            Log.d("xx","status--->"+status);
-                        }
+                        Log.d("xx","onError");
                     }
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("xx","onComplete");
                     }
                 });
 
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("xx","onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("xx","onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("xx","onDestroy");
+    }
 }

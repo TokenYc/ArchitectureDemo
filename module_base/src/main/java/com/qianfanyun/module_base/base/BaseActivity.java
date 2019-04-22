@@ -4,17 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
  * @date on 2019/3/26  3:11 PM
  * @mail 247067345@qq.com
  */
-public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseViewModel> extends RxAppCompatActivity {
 
     public T dataBinding;
     private VM viewModel;
@@ -52,6 +52,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
         }
         viewModel = (VM) ViewModelProviders.of(this).get(modelClass);
         getLifecycle().addObserver(viewModel);
+        viewModel.setLifecycleProvider(this);
         return viewModel;
     }
 

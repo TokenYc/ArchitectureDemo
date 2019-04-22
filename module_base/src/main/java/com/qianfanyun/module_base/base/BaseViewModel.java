@@ -3,6 +3,9 @@ package com.qianfanyun.module_base.base;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.trello.rxlifecycle3.LifecycleProvider;
+
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,19 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.ViewModel;
 
 /**
  * @author ArcherYc
  * @date on 2019/3/26  3:13 PM
  * @mail 247067345@qq.com
  */
-public class BaseViewModel extends AndroidViewModel implements LifecycleEventObserver {
+public class BaseViewModel extends AndroidViewModel implements LifecycleObserver {
 
     private UIChangeLiveData uc;
+
+    private WeakReference<LifecycleProvider> lifecycleProvider;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -37,6 +42,13 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleEventObs
         uc.dismissDialogEvent.call();
     }
 
+    public void setLifecycleProvider(LifecycleProvider lifecycleProvider) {
+        this.lifecycleProvider = new WeakReference<>(lifecycleProvider);
+    }
+
+    public LifecycleProvider getLifecycleProvider() {
+        return this.lifecycleProvider.get();
+    }
 
     /**
      * 跳转页面
@@ -77,6 +89,16 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleEventObs
         uc.onBackPressedEvent.call();
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onPause() {
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onStop() {
+
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
 
@@ -90,10 +112,6 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleEventObs
         return uc;
     }
 
-    @Override
-    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-
-    }
 
     public final class UIChangeLiveData extends SingleLiveEvent {
         private SingleLiveEvent<String> showDialogEvent;
