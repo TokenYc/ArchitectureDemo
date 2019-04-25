@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.qianfanyun.module_b.databinding.ActivityModuleBBinding;
 import com.qianfanyun.module_base.base.BaseActivity;
+import com.qianfanyun.module_base.base.BaseModel;
 
 
 public class ModuleBActivity extends BaseActivity<ActivityModuleBBinding, BViewModel> {
@@ -25,6 +26,11 @@ public class ModuleBActivity extends BaseActivity<ActivityModuleBBinding, BViewM
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public BaseModel initModel() {
+        return null;
     }
 
 }

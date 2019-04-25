@@ -4,7 +4,10 @@ package com.qianfanyun.module_login;
 import android.os.Bundle;
 
 import com.qianfanyun.module_base.base.BaseActivity;
+import com.qianfanyun.module_base.base.BaseModel;
 import com.qianfanyun.module_login.databinding.ActivityLoginBinding;
+
+import androidx.lifecycle.ViewModelProviders;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
@@ -22,4 +25,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     public int initVariableId() {
         return BR.viewModel;
     }
+
+    @Override
+    public BaseModel initModel() {
+        return LoginRepository.getInstance();
+    }
+
 }

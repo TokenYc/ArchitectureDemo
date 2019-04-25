@@ -4,6 +4,7 @@ package com.qianfanyun.module_database;
 import android.os.Bundle;
 
 import com.qianfanyun.module_base.base.BaseActivity;
+import com.qianfanyun.module_base.base.BaseModel;
 import com.qianfanyun.module_database.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding,DbViewModel> {
@@ -21,5 +22,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,DbViewModel> 
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public BaseModel initModel() {
+        return null;
     }
 }

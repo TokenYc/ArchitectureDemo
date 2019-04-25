@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.qianfanyun.module_base.base.BaseActivity;
+import com.qianfanyun.module_base.base.BaseModel;
 import com.qianfanyun.module_recyclerview.databinding.ActivityRecyclerViewBinding;
 
 public class RecyclerViewActivity extends BaseActivity<ActivityRecyclerViewBinding, RecyclerViewViewModel> {
@@ -18,5 +19,10 @@ public class RecyclerViewActivity extends BaseActivity<ActivityRecyclerViewBindi
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public BaseModel initModel() {
+        return null;
     }
 }

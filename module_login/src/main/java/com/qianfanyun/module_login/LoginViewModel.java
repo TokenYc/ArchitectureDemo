@@ -4,18 +4,22 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.qianfanyun.module_base.api.RxApiHelper;
 import com.qianfanyun.module_base.base.BaseViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author ArcherYc
  * @date on 2019/4/1  11:37 AM
  * @mail 247067345@qq.com
  */
-public class LoginViewModel extends BaseViewModel {
+public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     private MutableLiveData<String> name;
     private MutableLiveData<String> password;
@@ -26,6 +30,22 @@ public class LoginViewModel extends BaseViewModel {
 
     public void onLoginButtonClick(String name, String password) {
         showDialog("name--->" + name + "\t" + "password--->" + password);
+        addDispose(getModel().login(name, password)
+                .compose(RxApiHelper.rxSchedulerHelper())
+                .doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        dismissDialog();
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            Toast.makeText(getApplication(), "登录成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }));
     }
 
 

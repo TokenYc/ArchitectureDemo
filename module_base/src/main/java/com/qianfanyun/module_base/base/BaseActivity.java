@@ -34,13 +34,14 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
         super.onCreate(savedInstanceState);
 
         dataBinding = DataBindingUtil.setContentView(this, initContentView());
-        viewModel = initViewModel();
+        viewModel = createViewModel();
+        setModel(viewModel, initModel());
         dataBinding.setVariable(initVariableId(), viewModel);
         dataBinding.setLifecycleOwner(this);
         registerUIChangeLiveDataCallBack();
     }
 
-    private VM initViewModel() {
+    private VM createViewModel() {
         VM viewModel;
         Class modelClass;
         Type type = getClass().getGenericSuperclass();
@@ -56,6 +57,24 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
         return viewModel;
     }
 
+    private void setModel(VM viewModel, BaseModel model) {
+        if (model != null) {
+            Class modelClass;
+            Type type = viewModel.getClass().getGenericSuperclass();
+            if (type instanceof ParameterizedType) {
+                modelClass = (Class) ((ParameterizedType) type).getActualTypeArguments()[0];
+                if (modelClass.getName().equals(model.getClass().getName())) {
+                    viewModel.setModel(model);
+                }else{
+                    throw new RuntimeException("model must be same as viewModel's parameter");
+                }
+            } else {
+                throw new RuntimeException("viewModel must be parameterizedType ");
+            }
+        }
+    }
+
+
     /**
      * 初始化布局id
      *
@@ -69,6 +88,8 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
      * @return
      */
     public abstract int initVariableId();
+
+    public abstract BaseModel initModel();
 
 
     /**
@@ -153,5 +174,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, VM extends BaseVie
         startActivity(intent);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getLifecycle().removeObserver(viewModel);
+    }
 }

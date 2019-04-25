@@ -17,13 +17,16 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author ArcherYc
  * @date on 2019/3/26  3:13 PM
  * @mail 247067345@qq.com
  */
-public class BaseViewModel extends AndroidViewModel implements LifecycleObserver {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements LifecycleObserver {
+
+    private M model;
 
     private UIChangeLiveData uc;
 
@@ -33,6 +36,13 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleObserver
         super(application);
     }
 
+    public M getModel() {
+        return model;
+    }
+
+    public void setModel(M model) {
+        this.model = model;
+    }
 
     public void showDialog(String title) {
         uc.showDialogEvent.postValue(title);
@@ -74,6 +84,11 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleObserver
         uc.startActivityEvent.postValue(params);
     }
 
+    public void addDispose(Disposable disposable) {
+        if (model != null) {
+            model.addDisposable(disposable);
+        }
+    }
 
     /**
      * 关闭界面
@@ -104,6 +119,13 @@ public class BaseViewModel extends AndroidViewModel implements LifecycleObserver
 
     }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (model != null) {
+            model.onClear();
+        }
+    }
 
     public UIChangeLiveData getUC() {
         if (uc == null) {

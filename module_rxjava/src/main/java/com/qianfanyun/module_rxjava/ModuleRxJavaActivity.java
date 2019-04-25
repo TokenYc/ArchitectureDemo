@@ -4,6 +4,7 @@ package com.qianfanyun.module_rxjava;
 import android.os.Bundle;
 
 import com.qianfanyun.module_base.base.BaseActivity;
+import com.qianfanyun.module_base.base.BaseModel;
 import com.qianfanyun.module_rxjava.databinding.ActivityModuleRxjavaBinding;
 
 public class ModuleRxJavaActivity extends BaseActivity<ActivityModuleRxjavaBinding, RxJavaViewModel> {
@@ -21,6 +22,11 @@ public class ModuleRxJavaActivity extends BaseActivity<ActivityModuleRxjavaBindi
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public BaseModel initModel() {
+        return null;
     }
 
 }
