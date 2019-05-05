@@ -35,5 +35,4 @@ dependencies {
     addComponent 'module_login'
     addComponent 'module_recyclerview'
     addComponent 'module_database'
-
 }
