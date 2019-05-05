@@ -8,7 +8,7 @@ uploadArchives {
         repository(url:"file://${mavenDirPath.absolutePath}")
         pom.project {
             groupId "com.qianfanyun" // 包名
-            artifactId "module_base" // module的名字
+            artifactId project.name // module的名字
             version "1.0.0" // 版本号
         }
     }
