@@ -4,7 +4,7 @@
 
     <application>
         <activity android:name=".ModuleBActivity"></activity>
+        <activity android:name=".NewBActivity"></activity>
     </application>
-    <activity android:name=".NewBActivity"></activity>
 
 </manifest>

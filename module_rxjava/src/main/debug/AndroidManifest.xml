@@ -3,7 +3,7 @@
     package="com.qianfanyun.module_rxjava">
 
     <application
-        android:name="debug.DebugApplication"
+        android:name="com.qianfanyun.module_b.DebugApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"

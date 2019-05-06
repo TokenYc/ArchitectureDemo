@@ -1,22 +1,19 @@
-package com.qianfanyun.architecturedemo;
+package com.qianfanyun.module_login;
 
+import android.util.Log;
 
-import com.billy.cc.core.component.CC;
-import com.qianfanyun.module_base.base.application.ApplicationManager;
 import com.qianfanyun.module_base.base.application.BaseApplication;
+import com.qianfanyun.module_login.BuildConfig;
 
 /**
  * @author ArcherYc
- * @date on 2019/3/29  1:57 PM
+ * @date on 2019/4/1  9:21 AM
  * @mail 247067345@qq.com
  */
-public class MyApplication extends BaseApplication {
-
+public class DebugApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        CC.init(this);
-        ApplicationManager.init();
     }
 
     @Override
@@ -26,6 +23,6 @@ public class MyApplication extends BaseApplication {
 
     @Override
     public void init() {
-
+        Log.d("xx","module login application init");
     }
 }

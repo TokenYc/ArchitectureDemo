@@ -1,5 +1,8 @@
 ext.mainApp = true
+
 apply from: rootProject.file('cc-settings-2.gradle')
+
+
 
 
 android {
@@ -36,3 +39,6 @@ dependencies {
     addComponent 'module_recyclerview'
     addComponent 'module_database'
 }
+
+
+
